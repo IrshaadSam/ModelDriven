@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Commands.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">COEN448Project</a> &gt; <a href="index.source.html" class="el_package">org.example</a> &gt; <span class="el_source">Commands.java</span></div><h1>Commands.java</h1><pre class="source lang-java linenums">package org.example;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Commands {
+    //Pen up =&gt; U|u
+    //Pen down =&gt; D|d
+    //Turn Right =&gt; R|r (facing: east)
+    //Turn Left =&gt; L|l (facing: west)
+    //Move forward s spaces (s is a non-negative integer) =&gt; [M s|m s]
+    //Print the N by N array and display the indices =&gt; [P|p]
+    //Print current position of the pen and whether it is up or down and its facing direction =&gt; [C|c]
+    //Stop the program =&gt; [Q|q]
+    //[I n|i n] =&gt; Initialize the system:
+    // The values of the array floor are zeros and the robot is back to [0, 0], pen up and facing north.
+    // n size of the array, an integer greater than zero
+
+    public int sizeOfArray; //n
+<span class="nc" id="L20">    public boolean penDown = false;</span>
+<span class="nc" id="L21">    public boolean penUp = true;</span>
+<span class="nc" id="L22">    public boolean turnEast = false;</span>
+<span class="nc" id="L23">    public boolean turnWest = false;</span>
+<span class="nc" id="L24">    public boolean turnNorth = true;</span>
+<span class="nc" id="L25">    public boolean turnSouth = false;</span>
+    //public boolean turnRight = false;
+    //public boolean turnLeft = false;
+<span class="nc" id="L28">    private boolean Quit = false;</span>
+    public int posX; //
+    public int posY; // position of robot [x,y]
+    public String command;
+    public String stepsize;
+    public String myarrsize;
+<span class="nc" id="L34">    private String LeaveSymbol = &quot; &quot;;</span>
+<span class="nc" id="L35">    public String PenDirection = &quot;North&quot;;</span>
+
+
+    //Dummy initialization
+    //public String[][] arrayString = new String[1][1];
+<span class="nc" id="L40">    public ArrayList&lt;ArrayList&lt;String&gt;&gt; x = new ArrayList&lt;ArrayList&lt;String&gt;&gt;();</span>
+    public Robot bipbop;
+
+<span class="nc" id="L43">    public Commands(String i) {</span>
+<span class="nc" id="L44">        this.command = i;</span>
+//        this.sizeOfArray = arraysiz;
+//        this.bipbop = new Robot(arraysiz);
+<span class="nc" id="L47">    }</span>
+
+    public Robot getBipbop() {
+<span class="nc" id="L50">        return bipbop;</span>
+    }
+
+    public void setBipbop(Robot bipbop) {
+<span class="nc" id="L54">        this.bipbop = bipbop;</span>
+<span class="nc" id="L55">    }</span>
+
+    public String getCommand() {
+<span class="nc" id="L58">        return command;</span>
+    }
+
+    public void setCommand(String command) {
+<span class="nc" id="L62">        this.command = command;</span>
+<span class="nc" id="L63">        identifyCommand();</span>
+
+<span class="nc" id="L65">    }</span>
+
+
+    public void identifyCommand() {
+
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        while (!Quit) {</span>
+
+<span class="nc bnc" id="L72" title="All 10 branches missed.">            switch (command) {</span>
+                case &quot;u&quot;:
+<span class="nc" id="L74">                    setPenUp(true);</span>
+<span class="nc" id="L75">                    setPenDown(false);</span>
+<span class="nc" id="L76">                    break;</span>
+                case &quot;d&quot;:
+<span class="nc" id="L78">                    setPenDown(true);</span>
+<span class="nc" id="L79">                    setPenUp(false);</span>
+<span class="nc" id="L80">                    break;</span>
+                case &quot;r&quot;:
+<span class="nc" id="L82">                    setTurnRight(true);</span>
+<span class="nc" id="L83">                    setTurnLeft(false);</span>
+<span class="nc" id="L84">                    break;</span>
+
+                case &quot;l&quot;:
+<span class="nc" id="L87">                    setTurnLeft(true);</span>
+<span class="nc" id="L88">                    setTurnRight(false);</span>
+<span class="nc" id="L89">                    break;</span>
+
+                case &quot;i&quot;:
+<span class="nc" id="L92">                    Scanner userCommandtwo = new Scanner(System.in);  // Create a Scanner object</span>
+<span class="nc" id="L93">                    System.out.println(&quot;Enter array size&quot;);</span>
+
+<span class="nc" id="L95">                    myarrsize = userCommandtwo.nextLine();  // Read user input</span>
+<span class="nc" id="L96">                    System.out.println(&quot;arraysize is: &quot; + myarrsize);  // Output user input</span>
+
+<span class="nc" id="L98">                    this.sizeOfArray = Integer.parseInt(myarrsize);</span>
+
+<span class="nc" id="L100">                    InitializeArray(this.sizeOfArray);</span>
+<span class="nc" id="L101">                    break;</span>
+
+                case &quot;p&quot;:
+<span class="nc" id="L104">                    PrintArray();</span>
+<span class="nc" id="L105">                    break;</span>
+
+                case &quot;c&quot;:
+
+                    // System.out.println(&quot;The robot's position: &quot;+bipbop.posx+&quot;,&quot;+bipbop.posy);
+<span class="nc" id="L110">                    String Penstatus = &quot;&quot;;</span>
+<span class="nc bnc" id="L111" title="All 4 branches missed.">                    if (isPenDown() == false &amp;&amp; isPenUp() == true) </span>
+<span class="nc" id="L112">                    	Penstatus = &quot;Pen Up&quot;;</span>
+<span class="nc bnc" id="L113" title="All 4 branches missed.">                    else if (isPenDown() == true &amp;&amp; isPenUp() == false) </span>
+<span class="nc" id="L114">                    	Penstatus = &quot;Pen Down&quot;;</span>
+<span class="nc" id="L115">                    System.out.println(&quot;Pen status: &quot; + Penstatus);</span>
+
+<span class="nc" id="L117">                    System.out.println(&quot;Pen Direction: &quot; + PenDirection);</span>
+<span class="nc" id="L118">                    System.out.println(&quot;The robot's position: (&quot; + (sizeOfArray - bipbop.posx) + &quot;,&quot; + bipbop.posy + &quot;)&quot;);</span>
+
+<span class="nc" id="L120">                    break;</span>
+
+                case &quot;m&quot;:
+<span class="nc" id="L123">                    Scanner userCommandthree = new Scanner(System.in);  // Create a Scanner object</span>
+<span class="nc" id="L124">                    System.out.println(&quot;Enter step size&quot;);</span>
+
+<span class="nc" id="L126">                    stepsize = userCommandthree.nextLine();  // Read user input</span>
+<span class="nc" id="L127">                    System.out.println(&quot;step is: &quot; + stepsize);  // Output user input</span>
+
+<span class="nc bnc" id="L129" title="All 8 branches missed.">                    if (isTurnEast() == true &amp;&amp; isTurnWest() == false &amp;&amp; isTurnNorth() == false &amp;&amp; isTurnSouth() == false) {</span>
+<span class="nc" id="L130">                        MovetoRight(Integer.parseInt(stepsize));</span>
+<span class="nc bnc" id="L131" title="All 8 branches missed.">                    } else if (isTurnEast() == false &amp;&amp; isTurnWest() == true &amp;&amp; isTurnNorth() == false &amp;&amp; isTurnSouth() == false) {</span>
+<span class="nc" id="L132">                        MovetoLeft(Integer.parseInt(stepsize));</span>
+<span class="nc bnc" id="L133" title="All 8 branches missed.">                    } else if (isTurnEast() == false &amp;&amp; isTurnWest() == false &amp;&amp; isTurnNorth() == true &amp;&amp; isTurnSouth() == false) {</span>
+<span class="nc" id="L134">                        MoveForward(Integer.parseInt(stepsize));</span>
+<span class="nc bnc" id="L135" title="All 8 branches missed.">                    } else if (isTurnEast() == false &amp;&amp; isTurnWest() == false &amp;&amp; isTurnNorth() == false &amp;&amp; isTurnSouth() == true) {</span>
+<span class="nc" id="L136">                        MoveBackwards(Integer.parseInt(stepsize));</span>
+                    }
+                    //else if pen up the robot will automatically fly to the designated position without leaving any trail
+                    break;
+
+                case &quot;q&quot;:
+<span class="nc" id="L142">                    Quit = true;</span>
+<span class="nc" id="L143">                    System.exit(0);</span>
+<span class="nc" id="L144">                    break;</span>
+
+                default:
+<span class="nc" id="L147">                    System.out.println(&quot;input invalid&quot;);</span>
+                    break;
+            }
+
+<span class="nc" id="L151">            GetNewCommand();</span>
+
+        }
+<span class="nc" id="L154">    }</span>
+
+
+    public int getPosY() {
+<span class="nc" id="L158">        return posY;</span>
+    }
+
+    public void setPosY(int posY) {
+<span class="nc" id="L162">        this.posY = posY;</span>
+<span class="nc" id="L163">    }</span>
+
+    public int getPosX() {
+<span class="nc" id="L166">        return posX;</span>
+    }
+
+    public void setPosX(int posX) {
+<span class="nc" id="L170">        this.posX = posX;</span>
+<span class="nc" id="L171">    }</span>
+
+    public int getSizeOfArray() {
+<span class="nc" id="L174">        return sizeOfArray;</span>
+    }
+
+    // public void setTurnRight(boolean turnRight) {
+    //     this.turnRight = turnRight;
+    // }
+
+    public boolean isPenDown() {
+<span class="nc" id="L182">        return penDown;</span>
+    }
+
+    public void setPenDown(boolean penDown) {
+<span class="nc" id="L186">        this.penDown = penDown;</span>
+<span class="nc" id="L187">    }</span>
+
+    public boolean isPenUp() {
+<span class="nc" id="L190">        return penUp;</span>
+    }
+
+    public void setPenUp(boolean penUp) {
+<span class="nc" id="L194">        this.penUp = penUp;</span>
+<span class="nc" id="L195">    }</span>
+
+    public boolean isTurnEast() {
+<span class="nc" id="L198">        return turnEast;</span>
+    }
+
+    public boolean isTurnNorth() {
+<span class="nc" id="L202">        return turnNorth;</span>
+    }
+
+   public boolean isTurnSouth() {
+<span class="nc" id="L206">        return turnSouth;</span>
+    }
+
+    public void setTurnRight(boolean turnRight) {
+<span class="nc bnc" id="L210" title="All 2 branches missed.">        if (turnRight) {</span>
+<span class="nc bnc" id="L211" title="All 5 branches missed.">            switch (PenDirection) {</span>
+                case &quot;North&quot;:
+<span class="nc" id="L213">                    PenDirection = &quot;East&quot;;</span>
+<span class="nc" id="L214">                    this.turnNorth = false;</span>
+<span class="nc" id="L215">                    this.turnEast = turnRight;</span>
+<span class="nc" id="L216">                    break;</span>
+
+               case &quot;South&quot;:
+<span class="nc" id="L219">                    PenDirection = &quot;West&quot;;</span>
+<span class="nc" id="L220">                    this.turnSouth = false;</span>
+<span class="nc" id="L221">                    this.turnWest = turnRight;</span>
+<span class="nc" id="L222">                    break;</span>
+
+                case &quot;East&quot;:
+<span class="nc" id="L225">                    PenDirection = &quot;South&quot;;</span>
+<span class="nc" id="L226">                    this.turnEast = false;</span>
+<span class="nc" id="L227">                    this.turnSouth = turnRight;</span>
+<span class="nc" id="L228">                    break;</span>
+
+                case &quot;West&quot;:
+<span class="nc" id="L231">                    PenDirection = &quot;North&quot;;</span>
+<span class="nc" id="L232">                    this.turnWest = false;</span>
+<span class="nc" id="L233">                    this.turnNorth = turnRight;</span>
+<span class="nc" id="L234">                    break;</span>
+
+                default:
+<span class="nc" id="L237">                    System.out.println(&quot;invalid&quot;);</span>
+                    break;
+            }
+        }
+
+<span class="nc" id="L242">    }</span>
+
+    public boolean isTurnWest() {
+<span class="nc" id="L245">        return turnWest;</span>
+    }
+
+    public void setTurnLeft(boolean turnLeft) {
+<span class="nc bnc" id="L249" title="All 2 branches missed.">        if (turnLeft) {</span>
+<span class="nc bnc" id="L250" title="All 5 branches missed.">            switch (PenDirection) {</span>
+                case &quot;North&quot;:
+<span class="nc" id="L252">                    PenDirection = &quot;West&quot;;</span>
+<span class="nc" id="L253">                    this.turnNorth = false;</span>
+<span class="nc" id="L254">                    this.turnWest = turnLeft;</span>
+<span class="nc" id="L255">                    break;</span>
+
+                case &quot;South&quot;:
+<span class="nc" id="L258">                    PenDirection = &quot;East&quot;;</span>
+<span class="nc" id="L259">                    this.turnSouth = false;</span>
+<span class="nc" id="L260">                    this.turnEast = turnLeft;</span>
+<span class="nc" id="L261">                    break;</span>
+
+                case &quot;East&quot;:
+<span class="nc" id="L264">                    PenDirection = &quot;North&quot;;</span>
+<span class="nc" id="L265">                    this.turnEast = false;</span>
+<span class="nc" id="L266">                    this.turnNorth = turnLeft;</span>
+<span class="nc" id="L267">                    break;</span>
+
+                case &quot;West&quot;:
+<span class="nc" id="L270">                    PenDirection = &quot;South&quot;;</span>
+<span class="nc" id="L271">                   this.turnWest = false;</span>
+<span class="nc" id="L272">                    this.turnSouth = turnLeft;</span>
+<span class="nc" id="L273">                    break;</span>
+
+                default:
+<span class="nc" id="L276">                    System.out.println(&quot;invalid&quot;);</span>
+                    break;
+            }
+        }
+<span class="nc" id="L280">    }</span>
+
+    public void InitializeArray(int sizeOfArray) {
+
+<span class="nc bnc" id="L284" title="All 2 branches missed.">        for (int row = 0; row &lt; sizeOfArray; row++) {</span>
+<span class="nc" id="L285">            x.add(new ArrayList&lt;String&gt;());</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">            for (int col = 0; col &lt; sizeOfArray; col++) {</span>
+<span class="nc" id="L287">                x.get(row).add(col, &quot; &quot;);</span>
+            }
+        }
+
+<span class="nc" id="L291">        bipbop = new Robot(sizeOfArray);</span>
+
+<span class="nc" id="L293">    }</span>
+
+    public void PrintArray() {
+<span class="nc" id="L296">        int[] robotposition = bipbop.RobotPosition();</span>
+<span class="nc" id="L297">        int[] robotpreviousposition = bipbop.getRobotPreviousPosition();</span>
+<span class="nc" id="L298">        x.get(robotpreviousposition[0]).set(robotpreviousposition[1], LeaveSymbol);</span>
+
+<span class="nc bnc" id="L300" title="All 2 branches missed.">        if (isPenUp()) LeaveSymbol = &quot; &quot;;</span>
+
+<span class="nc" id="L302">        x.get(robotposition[0]).set(robotposition[1], &quot;*&quot;);</span>
+
+<span class="nc bnc" id="L304" title="All 2 branches missed.">        for (int i = 0; i &lt; x.size(); i++) {</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">            for (int j = 0; j &lt; x.size(); j++) {</span>
+<span class="nc" id="L306">                System.out.print(x.get(i).get(j) + &quot; &quot;);</span>
+
+            }
+<span class="nc" id="L309">            System.out.println();</span>
+        }
+<span class="nc" id="L311">    }</span>
+
+    public void MovetoRight(int stepsize) {
+
+        //to make sure that the robot can walk in this direction, we need to compare the robot's current position to the stepsize and if the diff is between 0 -&gt; arraysize then it's good to go
+<span class="nc" id="L316">        int[] robotposition = bipbop.RobotPosition();</span>
+<span class="nc" id="L317">        int col = robotposition[1];</span>
+<span class="nc" id="L318">        int limit = 0;</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">        if (sizeOfArray != 0) {</span>
+<span class="nc" id="L320">            limit = sizeOfArray - 1;</span>
+        } else {
+<span class="nc" id="L322">            limit = 0;</span>
+        }
+
+<span class="nc bnc" id="L325" title="All 2 branches missed.">        if (col + stepsize &gt; limit) {</span>
+<span class="nc" id="L326">            System.out.println(&quot;Robot is out of bounds&quot;);</span>
+<span class="nc" id="L327">            col = limit;</span>
+<span class="nc" id="L328">            stepsize = limit - robotposition[1];</span>
+        } else {
+<span class="nc" id="L330">            col += stepsize;</span>
+        }
+<span class="nc" id="L332">        x.get(robotposition[0]).set(robotposition[1], &quot;*&quot;);</span>
+<span class="nc" id="L333">        col = 0;</span>
+<span class="nc bnc" id="L334" title="All 2 branches missed.">        for (col = robotposition[1]; col &lt; robotposition[1] + stepsize; col++) {</span>
+
+<span class="nc bnc" id="L336" title="All 2 branches missed.">           if (isPenDown()) {</span>
+<span class="nc" id="L337">                x.get(robotposition[0]).set(col, &quot;*&quot;);</span>
+            }
+        }
+
+<span class="nc" id="L341">        System.out.println(&quot;The new y value is: &quot; + col);</span>
+<span class="nc" id="L342">        bipbop.RobotUpdatePosition(robotposition[0], col);</span>
+
+<span class="nc bnc" id="L344" title="All 2 branches missed.">        if (isPenDown()) LeaveSymbol = &quot;*&quot;;</span>
+<span class="nc" id="L345">    }</span>
+
+
+    public void MovetoLeft(int stepsize) {
+
+        //to make sure that the robot can walk in this direction, we need to compare the robot's current position to the stepsize and if the diff is between 0 -&gt; arraysize then it's good to go
+        //another case when stepsize is 1 the robot stays in place, because of the for loop format
+<span class="nc" id="L352">        int[] robotposition = bipbop.RobotPosition();</span>
+<span class="nc" id="L353">        int col = robotposition[1];</span>
+<span class="nc" id="L354">        int limit = 0;</span>
+<span class="nc bnc" id="L355" title="All 2 branches missed.">        if (col - stepsize &lt; limit) {</span>
+<span class="nc" id="L356">            System.out.println(&quot;Robot is out of bounds&quot;);</span>
+<span class="nc" id="L357">            col = limit;</span>
+<span class="nc" id="L358">            stepsize = robotposition[1];</span>
+        } else {
+<span class="nc" id="L360">            col -= stepsize;</span>
+        }
+
+<span class="nc" id="L363">        x.get(robotposition[0]).set(robotposition[1], &quot;*&quot;);</span>
+<span class="nc" id="L364">        col = posY;</span>
+<span class="nc bnc" id="L365" title="All 2 branches missed.">        for (col = robotposition[1]; col &gt; robotposition[1] - stepsize; col--) {</span>
+<span class="nc bnc" id="L366" title="All 2 branches missed.">            if (isPenDown()) {</span>
+<span class="nc" id="L367">                x.get(robotposition[0]).set(col, &quot;*&quot;);</span>
+            }
+        }
+<span class="nc" id="L370">        bipbop.RobotUpdatePosition(robotposition[0], col);</span>
+
+<span class="nc bnc" id="L372" title="All 2 branches missed.">        if (isPenDown()) LeaveSymbol = &quot;*&quot;;</span>
+<span class="nc" id="L373">    }</span>
+
+    public void MoveForward(int stepsize) {
+
+        //to make sure that the robot can walk in this direction, we need to compare the robot's current position to the stepsize and if the diff is between 0 -&gt; arraysize then it's good to go
+<span class="nc" id="L378">        int[] robotposition = bipbop.RobotPosition();</span>
+<span class="nc" id="L379">        int row = robotposition[0];</span>
+<span class="nc" id="L380">        int limit = 0;</span>
+
+        // Check if moving forward will exceed the array bounds
+<span class="nc bnc" id="L383" title="All 2 branches missed.">        if (row - stepsize &lt; limit) {</span>
+<span class="nc" id="L384">            System.out.println(&quot;Robot is out of bounds&quot;);</span>
+<span class="nc" id="L385">            row = limit;</span>
+<span class="nc" id="L386">            stepsize = robotposition[0];</span>
+        } else {
+<span class="nc" id="L388">            row -= stepsize;</span>
+        }
+
+<span class="nc" id="L391">        x.get(robotposition[0]).set(robotposition[1], &quot;*&quot;);</span>
+<span class="nc" id="L392">        row = 0;</span>
+<span class="nc bnc" id="L393" title="All 2 branches missed.">        for (row = robotposition[0]; row &gt; robotposition[0] - stepsize; row--) {</span>
+<span class="nc bnc" id="L394" title="All 2 branches missed.">            if (isPenDown()) {</span>
+<span class="nc" id="L395">                x.get(row).set(robotposition[1], &quot;*&quot;);</span>
+            }
+        }
+<span class="nc" id="L398">        bipbop.RobotUpdatePosition(row, robotposition[1]);</span>
+
+<span class="nc bnc" id="L400" title="All 2 branches missed.">        if (isPenDown()) LeaveSymbol = &quot;*&quot;;</span>
+<span class="nc" id="L401">    }</span>
+
+    public void MoveBackwards(int stepsize) {
+
+        //to make sure that the robot can walk in this direction, we need to compare the robot's current position to the stepsize and if the diff is between 0 -&gt; arraysize then it's good to go
+<span class="nc" id="L406">        int[] robotposition = bipbop.RobotPosition();</span>
+<span class="nc" id="L407">        int col = robotposition[1];</span>
+<span class="nc" id="L408">        int limit = sizeOfArray - 1;</span>
+<span class="nc bnc" id="L409" title="All 2 branches missed.">        if (col + stepsize &gt; limit) {</span>
+<span class="nc" id="L410">            System.out.println(&quot;Robot is out of bounds&quot;);</span>
+<span class="nc" id="L411">            col = limit;</span>
+<span class="nc" id="L412">            stepsize = limit - robotposition[1];</span>
+        } else {
+<span class="nc" id="L414">            col += stepsize;</span>
+        }
+
+<span class="nc" id="L417">        x.get(robotposition[0]).set(robotposition[1], &quot;*&quot;);</span>
+<span class="nc" id="L418">        int row = 0;</span>
+<span class="nc bnc" id="L419" title="All 2 branches missed.">        for (row = robotposition[0]; row &lt; robotposition[0] + stepsize; row++) {</span>
+<span class="nc bnc" id="L420" title="All 2 branches missed.">            if (isPenDown()) {</span>
+<span class="nc" id="L421">                x.get(row).set(robotposition[1], &quot;*&quot;);</span>
+            }
+        }
+<span class="nc" id="L424">        bipbop.RobotUpdatePosition(row, robotposition[1]);</span>
+
+<span class="nc bnc" id="L426" title="All 2 branches missed.">        if (isPenDown()) LeaveSymbol = &quot;*&quot;;</span>
+<span class="nc" id="L427">    }</span>
+
+    public void GetNewCommand() {
+<span class="nc" id="L430">        Scanner myObj = new Scanner(System.in);  // Create a Scanner object</span>
+<span class="nc" id="L431">        System.out.println(&quot;Enter Command&quot;);</span>
+
+<span class="nc" id="L433">        String userCommand = myObj.nextLine();  // Read user input</span>
+<span class="nc" id="L434">        System.out.println(&quot;userCommand is: &quot; + userCommand);  // Output user input</span>
+
+<span class="nc" id="L436">        this.command = userCommand.toLowerCase();</span>
+<span class="nc" id="L437">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
